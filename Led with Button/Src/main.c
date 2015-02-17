@@ -7,9 +7,6 @@ static void SystemClock_Config(void);
 
 int main(void)
 {
-	/* This sample code shows how to use GPIO HAL API to toggle an led
-	in an infinite loop. */
-	
 	/* STM32F0xx HAL library initialization:
 	- Configure the Flash prefetch
 	- Systick timer is configured by default as source of time base, but user 
@@ -32,17 +29,19 @@ int main(void)
 	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
 	GPIO_InitStruct.Pin = GPIO_PIN_4;
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	/* -3- Cobfigure PA3 in Input Mode with Pull-up */
 	GPIO_InitStruct.Mode  = GPIO_MODE_INPUT;
 	GPIO_InitStruct.Pull  = GPIO_PULLUP;
 	GPIO_InitStruct.Pin = GPIO_PIN_3;
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-	/* -3- Toggle IOs in an infinite loop */
-	while (1)
-	{
-		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
-		/* Insert delay 100 ms */
-		HAL_Delay(1000);
+	/* -4- Activate LED on Buttonpress */
+	while (1){
+	  if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_3) == GPIO_PIN_RESET){
+	      HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_SET);
+	  }else{
+	      HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_RESET);
+	  }
 	}
 }
 
