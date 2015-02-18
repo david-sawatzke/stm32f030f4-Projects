@@ -34,7 +34,6 @@ int main(void)
 	GPIO_InitStruct.Pull  = GPIO_PULLUP;
 	GPIO_InitStruct.Pin = GPIO_PIN_3;
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
 	/* -4- Activate LED on Buttonpress */
 	while (1){
 	  if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_3) == GPIO_PIN_RESET){
