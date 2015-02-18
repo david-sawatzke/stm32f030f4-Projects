@@ -35,8 +35,8 @@ int main(void)
 	GPIO_InitStruct.Pin = GPIO_PIN_3;
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 	/* -4- Activate Interrupt */
-	  HAL_NVIC_SetPriority(EXTI2_3_IRQn, 2, 0);
-	  HAL_NVIC_EnableIRQ(EXTI2_3_IRQn);
+	HAL_NVIC_SetPriority(EXTI2_3_IRQn, 2, 0);
+	HAL_NVIC_EnableIRQ(EXTI2_3_IRQn);
 	while (1){
 	}
 }
