@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Stm32f030f4-projects by dakesew</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Stm32f030f4-projects</h1>
+        <p>Well, I just experiment with my stm32f030f4. Here I&#39;ll try to write tutorials</p>
+
+        <p class="view"><a href="https://github.com/dakesew/stm32f030f4-Projects">View the Project on GitHub <small>dakesew/stm32f030f4-Projects</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/dakesew/stm32f030f4-Projects/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/dakesew/stm32f030f4-Projects/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/dakesew/stm32f030f4-Projects">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h3>
+<a id="strucutre" class="anchor" href="#strucutre" aria-hidden="true"><span class="octicon octicon-link"></span></a>Strucutre</h3>
+
+<p>Under each directory is a seperate Project. All the Projects are based upon <a href="http://dakesew.github.io/stm32f0xx_stm32cube_stripped/">my Template</a>.</p>
+
+<h3>
+<a id="blink-led" class="anchor" href="#blink-led" aria-hidden="true"><span class="octicon octicon-link"></span></a>Blink Led</h3>
+
+<p>Connect an Led between PA4 and GND
+Look at the main function (I’ve removed the comments)</p>
+
+<p><code>int main(void)</code>
+<code>{</code>
+<code>HAL_Init();</code>
+<code>SystemClock_Config();</code>
+<code>__GPIOA_CLK_ENABLE();</code>
+<code>GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;</code>
+<code>GPIO_InitStruct.Pull  = GPIO_PULLUP;</code>
+<code>GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;</code>
+<code>GPIO_InitStruct.Pin = GPIO_PIN_4;</code>
+<code>HAL_GPIO_Init(GPIOA, &amp;GPIO_InitStruct);</code>
+<code>while (1){</code>
+<code>HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);</code>
+<code>HAL_Delay(1000);</code>
+<code>}</code>
+<code>}</code></p>
+
+<p>First we call HAL_Init(). That does a bunch of low-level initialisation and sets the Systick timer as a 1ms timebase (The Systick timer is included in every Cortex core  and was included so that RTOSes don’t have to be specialised to a micro, because they need to use another Timer). The SystemClock_Config call doesn’t do anything, its just included if you want to change the clock settings at the start of the program.</p>
+
+<p>The we call __GPIOA_CLK_ENABLE(). This effectively activates the GPIOA peripheral, so it can be used.</p>
+
+<p>The next thing we do is populate GPIO_InitStruct. We’ve already defined that before main. There are multiple values:</p>
+
+<ul>
+<li>Mode: You define the Mode here. There are several options:
+
+<ul>
+<li>GPIO_MODE_INPUT: Input Floating Mode</li>
+<li>GPIO_MODE_OUTPUT_PP:Output Push Pull Mode</li>
+<li>GPIO_MODE_OUTPUT_OD:Output Open Drain Mode</li>
+<li>GPIO_MODE_AF_PP: Alternate Function Push Pull Mode</li>
+<li>GPIO_MODE_AF_OD: Alternate Function Open Drain Mode</li>
+<li>GPIO_MODE_ANALOG: Analog Mode</li>
+<li>GPIO_MODE_IT_RISING: External Interrupt Mode with Rising edge trigger detection</li>
+<li>GPIO_MODE_IT_FALLING: External Interrupt Mode with Falling edge trigger detection</li>
+<li>GPIO_MODE_IT_RISING_FALLING: External Interrupt Mode with Rising/Falling edge trigger detection</li>
+<li>If you use Alternate Function, you’re giving the IO pin to other peripherals like the USART</li>
+<li>If you use Analog Mode, you can use the ADC or DAC with this pin</li>
+<li>There are some more Options (usually not useful). If you want to know them, read the Description of the HAL Drivers where I got these options from</li>
+</ul>
+</li>
+<li>Pull: Here you can define if it has a pull-up/pull-down resistor activated. Does affect your pin, if you set it to be an Output
+
+<ul>
+<li>GPIO_NOPULL: No Pull-up or Pull-down activation</li>
+<li>GPIO_PULLUP: Pull-up activation</li>
+<li>GPIO_PULLDOWN: Pull-down activation</li>
+</ul>
+</li>
+<li>Speed: Here you can say how fast yourGPIO Pin should be able to change. If you don’t have a specific requirement, just leave it at high
+
+<ul>
+<li>LOW</li>
+<li>MEDIUM</li>
+<li>HIGH
+*Pin: Here you can define which pins that should be valid for. It can go from 0 to 15. You can change multiple pins at once: GPIO_PIN_0 | GPIO_PIN_1</li>
+</ul>
+</li>
+</ul>
+
+<p>Then we have the HAL_GPIO_Init(GPIOA, &amp;GPIO_InitStruct) line. Here we give GPIO_InitStruct to the function, that does all the work and say which GPIO Port that should be valid for.</p>
+
+<p>After that we have a loop that toggles PA4 with HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4) and then waits for 1000ms with HAL_Delay(1000).  Remember that Systick timer that I explained above? That comes into play here. It basically causes an interrupt every millisecond, that increments a variable uwTick. The delay function uses this tick, so be carefull when using it in an interrupt or when you have interrupts disabled.</p>
+
+<h3>
+<a id="led-with-button" class="anchor" href="#led-with-button" aria-hidden="true"><span class="octicon octicon-link"></span></a>Led with Button</h3>
+
+<p>So, lets assume we need to have inputs (crazy, right?).  Get the programm from “Led with Button” on your micro. Connect a button between PA3 and ground and an LED between PA3 and GND. Now try pressing the button. The unbelivable happendend. The LED light up ! Who’d have thougt ?</p>
+
+<p>So open the ./Src/main.c. You’ll find that alot is similar to the LED blinke example:
+<code>int main(void)</code>
+<code>{</code>
+  <code>HAL_Init();</code>
+  <code>SystemClock_Config();</code>
+  <code>__GPIOA_CLK_ENABLE();</code>
+  <code>GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;</code>
+  <code>GPIO_InitStruct.Pull  = GPIO_PULLUP;</code>
+  <code>GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;</code>
+  <code>GPIO_InitStruct.Pin = GPIO_PIN_4;</code>
+  <code>HAL_GPIO_Init(GPIOA, &amp;GPIO_InitStruct);</code>
+  <code>GPIO_InitStruct.Mode  = GPIO_MODE_INPUT;</code>
+  <code>GPIO_InitStruct.Pull  = GPIO_PULLUP;</code>
+  <code>GPIO_InitStruct.Pin = GPIO_PIN_3;</code>
+  <code>HAL_GPIO_Init(GPIOA, &amp;GPIO_InitStruct);</code>
+  <code>while (1){</code>
+    <code>if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_3) == GPIO_PIN_RESET){</code>
+      <code>HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_SET);</code>
+    <code>}else{</code>
+      <code>HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_RESET);</code>
+    <code>}</code>
+  <code>}</code>
+<code>}</code></p>
+
+<p>So, we call HAL_Init, get PA4 configured and then we just rewrite the values of the GPIO_InitStruct, so that it’s an input and it applies to PA3. Then we read PA3 and if the Pin is grounded (button is pressed), we set the PA4 bit, so LED lights up. If PA3 is high (through the Pull-up resistor), we disable the LED.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/dakesew">dakesew</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
