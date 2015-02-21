@@ -39,21 +39,35 @@
 <p>Connect an Led between PA4 and GND
 Look at the main function (I’ve removed the comments)</p>
 
-<p><code>int main(void)</code>
-<code>{</code>
-<code>HAL_Init();</code>
-<code>SystemClock_Config();</code>
-<code>__GPIOA_CLK_ENABLE();</code>
-<code>GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;</code>
-<code>GPIO_InitStruct.Pull  = GPIO_PULLUP;</code>
-<code>GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;</code>
-<code>GPIO_InitStruct.Pin = GPIO_PIN_4;</code>
-<code>HAL_GPIO_Init(GPIOA, &amp;GPIO_InitStruct);</code>
-<code>while (1){</code>
-<code>HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);</code>
-<code>HAL_Delay(1000);</code>
-<code>}</code>
-<code>}</code></p>
+<p><code>int main(void)</code></p>
+
+<p><code>{</code></p>
+
+<p><code>HAL_Init();</code></p>
+
+<p><code>SystemClock_Config();</code></p>
+
+<p><code>__GPIOA_CLK_ENABLE();</code></p>
+
+<p><code>GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;</code></p>
+
+<p><code>GPIO_InitStruct.Pull  = GPIO_PULLUP;</code></p>
+
+<p><code>GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;</code></p>
+
+<p><code>GPIO_InitStruct.Pin = GPIO_PIN_4;</code></p>
+
+<p><code>HAL_GPIO_Init(GPIOA, &amp;GPIO_InitStruct);</code></p>
+
+<p><code>while (1){</code></p>
+
+<p><code>HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);</code></p>
+
+<p><code>HAL_Delay(1000);</code></p>
+
+<p><code>}</code></p>
+
+<p><code>}</code></p>
 
 <p>First we call HAL_Init(). That does a bunch of low-level initialisation and sets the Systick timer as a 1ms timebase (The Systick timer is included in every Cortex core  and was included so that RTOSes don’t have to be specialised to a micro, because they need to use another Timer). The SystemClock_Config call doesn’t do anything, its just included if you want to change the clock settings at the start of the program.</p>
 
@@ -108,28 +122,50 @@ Look at the main function (I’ve removed the comments)</p>
 <p>So, lets assume we need to have inputs (crazy, right?).  Get the programm from “Led with Button” on your micro. Connect a button between PA3 and ground and an LED between PA3 and GND. Now try pressing the button. The unbelivable happendend. The LED light up ! Who’d have thougt ?</p>
 
 <p>So open the ./Src/main.c. You’ll find that alot is similar to the LED blinke example:
-<code>int main(void)</code>
-<code>{</code>
-  <code>HAL_Init();</code>
-  <code>SystemClock_Config();</code>
-  <code>__GPIOA_CLK_ENABLE();</code>
-  <code>GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;</code>
-  <code>GPIO_InitStruct.Pull  = GPIO_PULLUP;</code>
-  <code>GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;</code>
-  <code>GPIO_InitStruct.Pin = GPIO_PIN_4;</code>
-  <code>HAL_GPIO_Init(GPIOA, &amp;GPIO_InitStruct);</code>
-  <code>GPIO_InitStruct.Mode  = GPIO_MODE_INPUT;</code>
-  <code>GPIO_InitStruct.Pull  = GPIO_PULLUP;</code>
-  <code>GPIO_InitStruct.Pin = GPIO_PIN_3;</code>
-  <code>HAL_GPIO_Init(GPIOA, &amp;GPIO_InitStruct);</code>
-  <code>while (1){</code>
-    <code>if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_3) == GPIO_PIN_RESET){</code>
-      <code>HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_SET);</code>
-    <code>}else{</code>
-      <code>HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_RESET);</code>
-    <code>}</code>
-  <code>}</code>
-<code>}</code></p>
+<code>int main(void)</code></p>
+
+<p><code>{</code></p>
+
+<p><code>HAL_Init();</code></p>
+
+<p><code>SystemClock_Config();</code></p>
+
+<p><code>__GPIOA_CLK_ENABLE();</code></p>
+
+<p><code>GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_PP;</code></p>
+
+<p><code>GPIO_InitStruct.Pull  = GPIO_PULLUP;</code></p>
+
+<p><code>GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;</code></p>
+
+<p><code>GPIO_InitStruct.Pin = GPIO_PIN_4;</code></p>
+
+<p><code>HAL_GPIO_Init(GPIOA, &amp;GPIO_InitStruct);</code></p>
+
+<p><code>GPIO_InitStruct.Mode  = GPIO_MODE_INPUT;</code></p>
+
+<p><code>GPIO_InitStruct.Pull  = GPIO_PULLUP;</code></p>
+
+<p><code>GPIO_InitStruct.Pin = GPIO_PIN_3;</code></p>
+
+<p><code>HAL_GPIO_Init(GPIOA, &amp;GPIO_InitStruct);</code></p>
+
+<p><code>while (1){</code></p>
+
+<pre><code>`if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_3) == GPIO_PIN_RESET){`
+
+  `HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_SET);`
+
+`}else{`
+
+  `HAL_GPIO_WritePin(GPIOA,GPIO_PIN_4,GPIO_PIN_RESET);`
+
+`}`
+</code></pre>
+
+<p><code>}</code></p>
+
+<p><code>}</code></p>
 
 <p>So, we call HAL_Init, get PA4 configured and then we just rewrite the values of the GPIO_InitStruct, so that it’s an input and it applies to PA3. Then we read PA3 and if the Pin is grounded (button is pressed), we set the PA4 bit, so LED lights up. If PA3 is high (through the Pull-up resistor), we disable the LED.</p>
       </section>
