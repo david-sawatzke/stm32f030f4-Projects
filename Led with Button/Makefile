@@ -109,6 +109,8 @@ flash: all
 	-c "verify_image $(PROJ_NAME).elf" \
 	-c "reset run" -c shutdown
 
+debug:
+	xterm -e "/bin/sh openocd" & xterm -e "/bin/sh arm-none-eabi-gdb $(PROJ_NAME).elf"
 clean:
 	$(RM) $(OBJS) $(PROJ_NAME).elf $(PROJ_NAME).map 
 
