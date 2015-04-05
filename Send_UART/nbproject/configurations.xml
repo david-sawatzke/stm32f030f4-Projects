@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="Lib">
+        <df name="STM32Cube_FW_F0_V1.2.0">
+          <df name="Drivers">
+            <df name="CMSIS">
+              <df name="Device">
+                <df name="ST">
+                  <df name="STM32F0xx">
+                    <df name="Source">
+                      <df name="Templates">
+                        <in>system_stm32f0xx.c</in>
+                      </df>
+                    </df>
+                  </df>
+                </df>
+              </df>
+            </df>
+            <df name="STM32F0xx_HAL_Driver">
+              <df name="Src">
+                <in>stm32f0xx_hal.c</in>
+                <in>stm32f0xx_hal_adc.c</in>
+                <in>stm32f0xx_hal_adc_ex.c</in>
+                <in>stm32f0xx_hal_can.c</in>
+                <in>stm32f0xx_hal_cec.c</in>
+                <in>stm32f0xx_hal_comp.c</in>
+                <in>stm32f0xx_hal_cortex.c</in>
+                <in>stm32f0xx_hal_crc.c</in>
+                <in>stm32f0xx_hal_crc_ex.c</in>
+                <in>stm32f0xx_hal_dac.c</in>
+                <in>stm32f0xx_hal_dac_ex.c</in>
+                <in>stm32f0xx_hal_dma.c</in>
+                <in>stm32f0xx_hal_flash.c</in>
+                <in>stm32f0xx_hal_flash_ex.c</in>
+                <in>stm32f0xx_hal_gpio.c</in>
+                <in>stm32f0xx_hal_i2c.c</in>
+                <in>stm32f0xx_hal_i2c_ex.c</in>
+                <in>stm32f0xx_hal_i2s.c</in>
+                <in>stm32f0xx_hal_irda.c</in>
+                <in>stm32f0xx_hal_iwdg.c</in>
+                <in>stm32f0xx_hal_msp_template.c</in>
+                <in>stm32f0xx_hal_pcd.c</in>
+                <in>stm32f0xx_hal_pcd_ex.c</in>
+                <in>stm32f0xx_hal_pwr.c</in>
+                <in>stm32f0xx_hal_pwr_ex.c</in>
+                <in>stm32f0xx_hal_rcc.c</in>
+                <in>stm32f0xx_hal_rcc_ex.c</in>
+                <in>stm32f0xx_hal_rtc.c</in>
+                <in>stm32f0xx_hal_rtc_ex.c</in>
+                <in>stm32f0xx_hal_smartcard.c</in>
+                <in>stm32f0xx_hal_smartcard_ex.c</in>
+                <in>stm32f0xx_hal_smbus.c</in>
+                <in>stm32f0xx_hal_spi.c</in>
+                <in>stm32f0xx_hal_tim.c</in>
+                <in>stm32f0xx_hal_tim_ex.c</in>
+                <in>stm32f0xx_hal_tsc.c</in>
+                <in>stm32f0xx_hal_uart.c</in>
+                <in>stm32f0xx_hal_uart_ex.c</in>
+                <in>stm32f0xx_hal_usart.c</in>
+                <in>stm32f0xx_hal_wwdg.c</in>
+              </df>
+            </df>
+          </df>
+        </df>
+      </df>
+      <df name="Src">
+        <in>main.c</in>
+        <in>stm32f0xx_it.c</in>
+        <in>system_stm32f0xx.c</in>
+      </df>
+    </df>
+    <df root="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src" name="1">
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath>main.elf</executablePath>
+          <cTool>
+            <incDir>
+              <pElem>.</pElem>
+              <pElem>Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src</pElem>
+              <pElem>Inc</pElem>
+            </incDir>
+            <preprocessorList>
+              <Elem>STM32F030x6</Elem>
+            </preprocessorList>
+          </cTool>
+        </makeTool>
+      </makefileType>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/CMSIS/Device/ST/STM32F0xx/Source/Templates/system_stm32f0xx.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_adc.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_adc_ex.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_can.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_cec.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_comp.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_cortex.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_crc.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_crc_ex.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_dac.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_dac_ex.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_dma.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_flash.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_flash_ex.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_gpio.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_i2c.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_i2c_ex.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_i2s.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_irda.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_iwdg.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_msp_template.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_pcd.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_pcd_ex.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_pwr.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_pwr_ex.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_rcc.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_rcc_ex.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_rtc.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_rtc_ex.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_smartcard.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_smartcard_ex.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_smbus.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_spi.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_tim.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_tim_ex.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_tsc.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_uart_ex.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_usart.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src/stm32f0xx_hal_wwdg.c"
+            ex="false"
+            tool="0"
+            flavor2="2">
+      </item>
+      <item path="Src/main.c" ex="false" tool="0" flavor2="2">
+      </item>
+      <item path="Src/stm32f0xx_it.c" ex="false" tool="0" flavor2="2">
+      </item>
+      <item path="Src/system_stm32f0xx.c" ex="false" tool="0" flavor2="2">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
