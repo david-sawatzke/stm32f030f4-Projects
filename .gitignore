@@ -1,0 +1,6 @@
+*.o
+*.elf
+*.map
+*.bin
+*.hex
+*/nbproject/*
