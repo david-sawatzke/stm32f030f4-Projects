@@ -29,7 +29,7 @@ int main(void)
 	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
 	GPIO_InitStruct.Pin = GPIO_PIN_4;
 	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-	/* -3- Cobfigure PA3 in Interrupt Mode with Pull-up */
+	/* -3- Configure PA3 in Interrupt Mode with Pull-up */
 	GPIO_InitStruct.Mode  = GPIO_MODE_IT_FALLING;
 	GPIO_InitStruct.Pull  = GPIO_PULLUP;
 	GPIO_InitStruct.Pin = GPIO_PIN_3;
