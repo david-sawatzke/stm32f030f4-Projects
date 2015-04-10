@@ -19,6 +19,7 @@ int main(void)
 
     HAL_Init();
     SystemClock_Config();
+    HAL_NVIC_SetPriority(SysTick_IRQn, 0 ,0);
 
     /* -1- Enable each GPIO Clock (to be able to program the configuration registers) */
     __GPIOA_CLK_ENABLE();
@@ -176,7 +177,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
         } else {
             UART_Send_String_DMA(&UartHandle, "The button is released \r\n");
         }
-    }
+     }
 }
 
 void SystemClock_Config(void)
