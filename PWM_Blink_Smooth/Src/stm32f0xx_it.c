@@ -127,16 +127,7 @@ void SysTick_Handler(void)
 /*void PPP_IRQHandler(void)
 {
 }*/
-void DMA1_Channel2_3_IRQHandler(void)
-{
-    HAL_DMA_IRQHandler(UartHandle.hdmatx);
-    HAL_DMA_IRQHandler(UartHandle.hdmarx);
-}
 
-void EXTI4_15_IRQHandler(void)
-{
-    HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_4);
-}
 /**
  * @}
  */
