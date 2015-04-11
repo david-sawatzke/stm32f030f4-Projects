@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src" name="1">
+    </df>
     <df root="." name="0">
       <df name="Lib">
         <df name="STM32Cube_FW_F0_V1.2.0">
@@ -70,8 +72,6 @@
         <in>stm32f0xx_it.c</in>
         <in>system_stm32f0xx.c</in>
       </df>
-    </df>
-    <df root="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src" name="1">
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
