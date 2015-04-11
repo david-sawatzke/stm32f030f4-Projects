@@ -1,10 +1,10 @@
 
 #include "main.h"
 
+
 GPIO_InitTypeDef GPIO_InitStruct;
 TIM_HandleTypeDef TIM_HandleStruct;
 TIM_OC_InitTypeDef TIM_OC_InitStruct;
-
 static void SystemClock_Config(void);
 
 uint32_t uhPrescalerValue = 0;
@@ -20,7 +20,7 @@ int main(void)
     /* -2- Calculate Prescaler */
     //We want the Timer to run with 8MHz (the maximum, since we're running of the internal Clock, which runs at 8MHz, without PLL)
     uhPrescalerValue = (uint32_t) (SystemCoreClock / 8000000) - 1;
-    
+
     /* -3- Enable Clocks*/
     //GPIO
     __GPIOA_CLK_ENABLE();
@@ -43,7 +43,7 @@ int main(void)
     TIM_HandleStruct.Init.CounterMode = TIM_COUNTERMODE_UP;
     TIM_HandleStruct.Init.RepetitionCounter = 0;
     HAL_TIM_PWM_Init(&TIM_HandleStruct);
-    
+
     /* -6- Configure PWM-Output*/
     TIM_OC_InitStruct.OCMode = TIM_OCMODE_PWM1;
     TIM_OC_InitStruct.OCPolarity = TIM_OCPOLARITY_HIGH;
@@ -53,13 +53,13 @@ int main(void)
     TIM_OC_InitStruct.OCNIdleState = TIM_OCNIDLESTATE_RESET;
     TIM_OC_InitStruct.Pulse = CMP_VAL;
     HAL_TIM_PWM_ConfigChannel(&TIM_HandleStruct, &TIM_OC_InitStruct, TIM_CHANNEL_3);
-    
+
     /* -7- Enable Timer and PWM Output*/
     HAL_TIM_PWM_Start(&TIM_HandleStruct, TIM_CHANNEL_3);
 
     while (1) {
         /* -8- Illuminate LED*/
-        for(CMP_VAL = 0; CMP_VAL != (PERIOD_VALUE ); CMP_VAL ++){
+        for (CMP_VAL = 0; CMP_VAL != (PERIOD_VALUE); CMP_VAL++) {
             TIM_OC_InitStruct.Pulse = CMP_VAL;
             HAL_TIM_PWM_ConfigChannel(&TIM_HandleStruct, &TIM_OC_InitStruct, TIM_CHANNEL_3);
             HAL_TIM_PWM_Start(&TIM_HandleStruct, TIM_CHANNEL_3);
@@ -68,7 +68,7 @@ int main(void)
         /* -8- Wait a bit at full brightness*/
         HAL_Delay(1000);
         /* -10- Dim LED*/
-        for(CMP_VAL = (PERIOD_VALUE ); CMP_VAL != 0; CMP_VAL --){
+        for (CMP_VAL = (PERIOD_VALUE); CMP_VAL != 0; CMP_VAL--) {
             TIM_OC_InitStruct.Pulse = CMP_VAL;
             HAL_TIM_PWM_ConfigChannel(&TIM_HandleStruct, &TIM_OC_InitStruct, TIM_CHANNEL_3);
             HAL_TIM_PWM_Start(&TIM_HandleStruct, TIM_CHANNEL_3);
