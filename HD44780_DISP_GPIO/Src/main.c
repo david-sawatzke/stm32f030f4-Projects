@@ -74,11 +74,17 @@ int main(void)
     DISP_HandleStruct.D7.Pin = GPIO_PIN_1;
     DISP_HandleStruct.RS.Port = GPIOA;
     DISP_HandleStruct.RS.Pin = GPIO_PIN_9;
-    DISP_HandleStruct.E.Port = GPIOB;
+    DISP_HandleStruct.E.Port = GPIOA;
     DISP_HandleStruct.E.Pin = GPIO_PIN_10;
     DISP_HandleStruct.Lines = 2;
     DISP_Init(&DISP_HandleStruct);
-    DISP_Putc(&DISP_HandleStruct, 'a');
+    DISP_Putc(&DISP_HandleStruct, 'H');
+    DISP_Putc(&DISP_HandleStruct, 'e');
+    DISP_Putc(&DISP_HandleStruct, 'l');
+    DISP_Putc(&DISP_HandleStruct, 'l');
+    DISP_Putc(&DISP_HandleStruct, 'o');
+    DISP_Putc(&DISP_HandleStruct, '!');
+
     while (1) {
 
     }
@@ -108,7 +114,7 @@ HAL_StatusTypeDef DISP_Init(DISP_HandleTypeDef *DISP_HandleStruct)
     HAL_GPIO_WritePin(DISP_HandleStruct->E.Port, DISP_HandleStruct->E.Pin, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(DISP_HandleStruct->RS.Port, DISP_HandleStruct->RS.Pin, GPIO_PIN_RESET);
     //Data Lines Low
-    DISP_Out(DISP_HandleStruct,0x00);
+    DISP_Out(DISP_HandleStruct, 0x00);
     //Startup Delay
     HAL_Delay(15);
     //Init Display
