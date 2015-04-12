@@ -30,6 +30,11 @@
 
 #define DISP_BUSY                (1<<7)    // DB7: DISP is busy
 
+#define DISP_DDADR_LINE1         0x00
+#define DISP_DDADR_LINE2         0x40
+#define DISP_DDADR_LINE3         0x10
+#define DISP_DDADR_LINE4         0x50
+
 typedef struct {
     GPIO_TypeDef *Port;
     uint32_t Pin;
@@ -53,6 +58,9 @@ void DISP_Write(DISP_HandleTypeDef *DISP_HandleStruct, uint8_t data, uint8_t rs)
 void DISP_CMD(DISP_HandleTypeDef *DISP_HandleStruct, uint8_t cmd);
 void DISP_Putc(DISP_HandleTypeDef *DISP_HandleStruct, char c);
 void DISP_Out(DISP_HandleTypeDef *DISP_HandleStruct, uint8_t data);
+void DISP_Setcursor(DISP_HandleTypeDef *DISP_HandleStruct, uint8_t x, uint8_t y);
+void DISP_Puts(DISP_HandleTypeDef *DISP_HandleStruct, char *data);
+
 
 
 void SystemClock_Config(void);
@@ -63,7 +71,6 @@ int main(void)
     HAL_Init();
     SystemClock_Config();
     HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
-    HAL_Delay(2000);
     DISP_HandleStruct.D4.Port = GPIOA;
     DISP_HandleStruct.D4.Pin = GPIO_PIN_5;
     DISP_HandleStruct.D5.Port = GPIOA;
@@ -78,15 +85,11 @@ int main(void)
     DISP_HandleStruct.E.Pin = GPIO_PIN_10;
     DISP_HandleStruct.Lines = 2;
     DISP_Init(&DISP_HandleStruct);
-    DISP_Putc(&DISP_HandleStruct, 'H');
-    DISP_Putc(&DISP_HandleStruct, 'e');
-    DISP_Putc(&DISP_HandleStruct, 'l');
-    DISP_Putc(&DISP_HandleStruct, 'l');
-    DISP_Putc(&DISP_HandleStruct, 'o');
-    DISP_Putc(&DISP_HandleStruct, '!');
+    DISP_Puts(&DISP_HandleStruct, "Hello World!");
+    DISP_Setcursor(&DISP_HandleStruct, 0, 2);
+    DISP_Puts(&DISP_HandleStruct, "Bye, cruel World!");
 
     while (1) {
-
     }
 }
 
@@ -203,6 +206,12 @@ void DISP_CMD(DISP_HandleTypeDef *DISP_HandleStruct, uint8_t cmd)
     DISP_Write(DISP_HandleStruct, cmd, 0);
 }
 
+void DISP_Puts(DISP_HandleTypeDef *DISP_HandleStruct, char *data)
+{
+    while (*data != '\0')
+        DISP_Putc(DISP_HandleStruct, *data++);
+}
+
 void DISP_Putc(DISP_HandleTypeDef *DISP_HandleStruct, char c)
 {
     DISP_Write(DISP_HandleStruct, c, 1);
@@ -234,7 +243,34 @@ void DISP_Write(DISP_HandleTypeDef *DISP_HandleStruct, uint8_t data, uint8_t rs)
 
     DISP_Out(DISP_HandleStruct, 0xff);
     HAL_Delay(1);
+}
 
+void DISP_Setcursor(DISP_HandleTypeDef *DISP_HandleStruct, uint8_t x, uint8_t y)
+{
+    uint8_t data;
+
+    switch (y) {
+    case 1: // 1. Line
+        data = DISP_DDRAM + DISP_DDADR_LINE1 + x;
+        break;
+
+    case 2: // 2. Line
+        data = DISP_DDRAM + DISP_DDADR_LINE2 + x;
+        break;
+
+    case 3: // 3. Line
+        data = DISP_DDRAM + DISP_DDADR_LINE3 + x;
+        break;
+
+    case 4: // 4. Line
+        data = DISP_DDRAM + DISP_DDADR_LINE4 + x;
+        break;
+
+    default:
+        return;
+    }
+
+    DISP_CMD(DISP_HandleStruct, data);
 }
 
 void SystemClock_Config(void)
