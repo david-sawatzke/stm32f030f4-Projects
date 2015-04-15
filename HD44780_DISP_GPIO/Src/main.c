@@ -1,8 +1,6 @@
 
 #include "main.h"
 
-
-
 #define DISP_CLR                 (1<<0)    // DB0: clear display
 #define DISP_RST                 (0x30)    // Reset Display
 #define DISP_HOME                (1<<1)    // DB1: return to home position
@@ -60,6 +58,8 @@ void DISP_Putc(DISP_HandleTypeDef *DISP_HandleStruct, char c);
 void DISP_Out(DISP_HandleTypeDef *DISP_HandleStruct, uint8_t data);
 void DISP_Setcursor(DISP_HandleTypeDef *DISP_HandleStruct, uint8_t x, uint8_t y);
 void DISP_Puts(DISP_HandleTypeDef *DISP_HandleStruct, char *data);
+void DISP_PutInt(DISP_HandleTypeDef *DISP_HandleStruct, int pData);
+void DISP_Delay(uint16_t t);
 
 
 
@@ -67,10 +67,11 @@ void SystemClock_Config(void);
 
 int main(void)
 {
-
+    int i = 0;
     HAL_Init();
     SystemClock_Config();
     HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+    HAL_Delay(500);
     DISP_HandleStruct.D4.Port = GPIOA;
     DISP_HandleStruct.D4.Pin = GPIO_PIN_5;
     DISP_HandleStruct.D5.Port = GPIOA;
@@ -88,9 +89,36 @@ int main(void)
     DISP_Puts(&DISP_HandleStruct, "Hello World!");
     DISP_Setcursor(&DISP_HandleStruct, 0, 2);
     DISP_Puts(&DISP_HandleStruct, "Bye, cruel World!");
-
+    HAL_Delay(1000);
+    DISP_CMD(&DISP_HandleStruct, DISP_CLR);
+    HAL_Delay(1);
     while (1) {
+        DISP_Setcursor(&DISP_HandleStruct, 0, 1);
+        DISP_PutInt(&DISP_HandleStruct, i);
+        i++;
+        HAL_Delay(10);
     }
+}
+
+void DISP_PutInt(DISP_HandleTypeDef *DISP_HandleStruct, int pData)
+{
+    if (pData < 0) {
+        DISP_Putc(DISP_HandleStruct, '-');
+        pData *= -1;
+    } else {
+        DISP_Putc(DISP_HandleStruct, '+');
+    }
+    DISP_Putc(DISP_HandleStruct, '0' + (pData / 1000000000)); //billion
+    DISP_Putc(DISP_HandleStruct, '0' + ((pData / 100000000) % 10)); //hundred million
+    DISP_Putc(DISP_HandleStruct, '0' + ((pData / 10000000) % 10)); //ten million
+    DISP_Putc(DISP_HandleStruct, '0' + ((pData / 1000000) % 10)); //million
+    DISP_Putc(DISP_HandleStruct, '0' + ((pData / 100000) % 10)); //hundred thousand
+    DISP_Putc(DISP_HandleStruct, '0' + ((pData / 10000) % 10)); //hundred thousand
+    DISP_Putc(DISP_HandleStruct, '0' + ((pData / 1000) % 10)); //thousand
+    DISP_Putc(DISP_HandleStruct, '0' + ((pData / 100) % 10)); //hundred
+    DISP_Putc(DISP_HandleStruct, '0' + ((pData / 10) % 10)); //ten
+    DISP_Putc(DISP_HandleStruct, '0' + (pData % 10)); //one
+
 }
 
 HAL_StatusTypeDef DISP_Init(DISP_HandleTypeDef *DISP_HandleStruct)
@@ -208,8 +236,9 @@ void DISP_CMD(DISP_HandleTypeDef *DISP_HandleStruct, uint8_t cmd)
 
 void DISP_Puts(DISP_HandleTypeDef *DISP_HandleStruct, char *data)
 {
-    while (*data != '\0')
+    while (*data != '\0') {
         DISP_Putc(DISP_HandleStruct, *data++);
+    }
 }
 
 void DISP_Putc(DISP_HandleTypeDef *DISP_HandleStruct, char c)
@@ -225,24 +254,23 @@ void DISP_Out(DISP_HandleTypeDef *DISP_HandleStruct, uint8_t data)
     HAL_GPIO_WritePin(DISP_HandleStruct->D4.Port, DISP_HandleStruct->D4.Pin, data & (1 << 4));
 }
 
+//WARNING: If you don't have 8MHz as your clock frequency, change the Delay values
 void DISP_Write(DISP_HandleTypeDef *DISP_HandleStruct, uint8_t data, uint8_t rs)
 {
     HAL_GPIO_WritePin(DISP_HandleStruct->RS.Port, DISP_HandleStruct->RS.Pin, rs);
 
     DISP_Out(DISP_HandleStruct, data);
     HAL_GPIO_WritePin(DISP_HandleStruct->E.Port, DISP_HandleStruct->E.Pin, GPIO_PIN_SET);
-    HAL_Delay(1);
+    DISP_Delay(50);
     HAL_GPIO_WritePin(DISP_HandleStruct->E.Port, DISP_HandleStruct->E.Pin, GPIO_PIN_RESET);
-    HAL_Delay(1);
 
     DISP_Out(DISP_HandleStruct, (data << 4));
     HAL_GPIO_WritePin(DISP_HandleStruct->E.Port, DISP_HandleStruct->E.Pin, GPIO_PIN_SET);
-    HAL_Delay(1);
+    DISP_Delay(50);
     HAL_GPIO_WritePin(DISP_HandleStruct->E.Port, DISP_HandleStruct->E.Pin, GPIO_PIN_RESET);
-    HAL_Delay(1);
+    DISP_Delay(20);
 
     DISP_Out(DISP_HandleStruct, 0xff);
-    HAL_Delay(1);
 }
 
 void DISP_Setcursor(DISP_HandleTypeDef *DISP_HandleStruct, uint8_t x, uint8_t y)
@@ -271,6 +299,12 @@ void DISP_Setcursor(DISP_HandleTypeDef *DISP_HandleStruct, uint8_t x, uint8_t y)
     }
 
     DISP_CMD(DISP_HandleStruct, data);
+}
+
+void DISP_Delay(uint16_t t)
+{
+    volatile uint16_t i;
+    for (i = 0; i <= t; i++);
 }
 
 void SystemClock_Config(void)
