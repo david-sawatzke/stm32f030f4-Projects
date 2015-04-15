@@ -1,14 +1,15 @@
 
 #include "main.h"
 
-
+GPIO_InitTypeDef GPIO_InitStruct;
+UART_HandleTypeDef UartHandle;
 DISP_HandleTypeDef DISP_HandleStruct;
+char Msg [40];
 
 void SystemClock_Config(void);
 
 int main(void)
 {
-    int i = 0;
     HAL_Init();
     SystemClock_Config();
     HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
@@ -27,20 +28,36 @@ int main(void)
     DISP_HandleStruct.E.Pin = GPIO_PIN_10;
     DISP_HandleStruct.Lines = 2;
     DISP_Init(&DISP_HandleStruct);
-    DISP_Puts(&DISP_HandleStruct, "Hello World!");
-    DISP_Setcursor(&DISP_HandleStruct, 0, 2);
-    DISP_Puts(&DISP_HandleStruct, "Bye, cruel World!");
-    HAL_Delay(1000);
-    DISP_CMD(&DISP_HandleStruct, DISP_CLR);
-    HAL_Delay(1);
-    while (1) {
-        DISP_Setcursor(&DISP_HandleStruct, 0, 1);
-        DISP_PutInt(&DISP_HandleStruct, i);
-        i++;
-        HAL_Delay(10);
-    }
-}
+    __GPIOA_CLK_ENABLE();
+    __USART1_CLK_ENABLE();
+    
+    /* -4- Configure TX/RX GPIO */
 
+    GPIO_InitStruct.Pin = GPIO_PIN_3;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
+    GPIO_InitStruct.Alternate = GPIO_AF1_USART1;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    
+    
+    /* -5- Configure the UART peripheral */
+    UartHandle.Instance = USART1;
+    UartHandle.Init.BaudRate = 9600;
+    UartHandle.Init.WordLength = UART_WORDLENGTH_8B;
+    UartHandle.Init.StopBits = UART_STOPBITS_1;
+    UartHandle.Init.Parity = UART_PARITY_NONE;
+    UartHandle.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+    UartHandle.Init.Mode = UART_MODE_RX;
+    UartHandle.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+    HAL_UART_Init(&UartHandle);
+    while (1) {
+        HAL_UART_Receive(&UartHandle, (uint8_t *)&Msg[0], 1, 0xFFFFFFFF);
+        DISP_Putc(&DISP_HandleStruct,Msg[0]);
+
+    }
+    return 0;
+}
 
 void SystemClock_Config(void)
 {
