@@ -1,19 +1,29 @@
 
 #include "main.h"
+#define PosY_MAX 9
+#define PosX_MAX 39
 
 GPIO_InitTypeDef GPIO_InitStruct;
 UART_HandleTypeDef UartHandle;
 DISP_HandleTypeDef DISP_HandleStruct;
-char Msg [40];
+char Msg [PosY_MAX + 1][PosX_MAX + 1];
 uint8_t PosX = 0;
-uint8_t PosY = 1;
+uint8_t PosY = 0;
 void SystemClock_Config(void);
+void PrintScreen(uint8_t PosY, uint8_t PosX);
 
 int main(void)
 {
     HAL_Init();
     SystemClock_Config();
     HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+    for (PosY = 0; PosY <= PosY_MAX; PosY++) {
+        for (PosX = 0; PosX <= PosX_MAX; PosX++) {
+            Msg[PosY][PosX] = ' ';
+        }
+    }
+    PosY = 0;
+    PosX = 0;
     DISP_HandleStruct.D4.Port = GPIOA;
     DISP_HandleStruct.D4.Pin = GPIO_PIN_5;
     DISP_HandleStruct.D5.Port = GPIOA;
@@ -58,53 +68,70 @@ int main(void)
     DISP_Setcursor(&DISP_HandleStruct, 0, PosY);
     DISP_CMD(&DISP_HandleStruct, DISP_DISPLAYMODE | DISP_DISPLAYMODE_ON | DISP_DISPLAYMODE_BLINK);
     while (1) {
-        if (Msg[0] == '\r') {
-            if (PosY == 1) {
-                PosY = 2;
-            } else {
+        if (Msg[PosY][PosX] == '\r') {
+            Msg[PosY][PosX] = ' ';
+            if (PosY == 0) {
                 PosY = 1;
+            } else {
+                PosY = 0;
             }
-            DISP_Setcursor(&DISP_HandleStruct, 0, PosY);
             for (PosX = 0; PosX < 16; PosX++) {
-                DISP_Putc(&DISP_HandleStruct, ' ');
+                Msg[PosY][PosX] = ' ';
             }
             PosX = 0;
-            DISP_Setcursor(&DISP_HandleStruct, 0, PosY);
-        } else if ((Msg[0] == 127) || (Msg[0] == '\b')) {
+        } else if ((Msg[PosY][PosX] == 127) || (Msg[PosY][PosX] == '\b')) {
+            Msg[PosY][PosX] = ' ';
             if (PosX == 0) {
-                if (PosY == 1) {
-                    PosY = 2;
-                } else {
+                if (PosY == 0) {
                     PosY = 1;
+                } else {
+                    PosY = 0;
                 }
                 PosX = 16;
             }
-            DISP_Setcursor(&DISP_HandleStruct, PosX - 1, PosY);
-            DISP_Putc(&DISP_HandleStruct, ' ');
-            DISP_Setcursor(&DISP_HandleStruct, PosX - 1, PosY);
             PosX--;
+            Msg[PosY][PosX] = ' ';
         } else {
+            PosX++;
             if (PosX >= 16) {
                 if (PosY == 1) {
-                    PosY = 2;
+                    PosY = 0;
                 } else {
                     PosY = 1;
                 }
-                DISP_Setcursor(&DISP_HandleStruct, 0, PosY);
                 for (PosX = 0; PosX < 16; PosX++) {
-                    DISP_Putc(&DISP_HandleStruct, ' ');
+                    Msg[PosY][PosX] = ' ';
                 }
                 PosX = 0;
-                DISP_Setcursor(&DISP_HandleStruct, PosX, PosY);
             }
-            DISP_Putc(&DISP_HandleStruct, Msg[0]);
-            PosX++;
         }
-        HAL_UART_Receive(&UartHandle, (uint8_t *) & Msg[0], 1, 0xFFFFFFFF);
 
+        PrintScreen(0, 0);
+        DISP_Setcursor(&DISP_HandleStruct, PosX, PosY);
 
+        HAL_UART_Receive(&UartHandle, (uint8_t *) & Msg[PosY][PosX], 1, 0xFFFFFFFF);
     }
     return 0;
+}
+
+void PrintScreen(uint8_t Y, uint8_t X)
+{
+    uint8_t i;
+    uint8_t Y_2nd;
+    DISP_Setcursor(&DISP_HandleStruct, 0, 0);
+    for (i = 0; (i < 16)&&(i + X <= PosX_MAX); i++) {
+        DISP_Putc(&DISP_HandleStruct, Msg[Y][X + i]);
+    }
+    DISP_Setcursor(&DISP_HandleStruct, 0, 1);
+
+    if (Y >= PosY_MAX) {
+        Y_2nd = 0;
+    } else {
+        Y_2nd = Y + 1;
+    }
+    for (i = 0; (i < 16)&&(i + X <= PosX_MAX); i++) {
+        DISP_Putc(&DISP_HandleStruct, Msg[Y_2nd][X + i]);
+    }
 }
 
 void SystemClock_Config(void)

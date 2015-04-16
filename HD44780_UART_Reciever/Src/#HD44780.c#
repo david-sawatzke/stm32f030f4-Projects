@@ -179,19 +179,19 @@ void DISP_Setcursor(DISP_HandleTypeDef *DISP_HandleStruct, uint8_t x, uint8_t y)
     uint8_t data;
 
     switch (y) {
-    case 0: // 0. Line
+    case 1: // 1. Line
         data = DISP_DDRAM + DISP_DDADR_LINE1 + x;
         break;
 
-    case 1: // 1. Line
+    case 2: // 2. Line
         data = DISP_DDRAM + DISP_DDADR_LINE2 + x;
         break;
 
-    case 2: // 2. Line
+    case 3: // 3. Line
         data = DISP_DDRAM + DISP_DDADR_LINE3 + x;
         break;
 
-    case 3: // 3. Line
+    case 4: // 4. Line
         data = DISP_DDRAM + DISP_DDADR_LINE4 + x;
         break;
 
