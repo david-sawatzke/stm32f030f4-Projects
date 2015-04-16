@@ -3,7 +3,6 @@
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
       <df name="Inc">
-        <in>HD44780.h</in>
         <in>main.h</in>
         <in>stm32f0xx_hal_conf.h</in>
         <in>stm32f0xx_it.h</in>
@@ -210,7 +209,6 @@
         </df>
       </df>
       <df name="Src">
-        <in>HD44780.c</in>
         <in>main.c</in>
         <in>stm32f0xx_it.c</in>
         <in>system_stm32f0xx.c</in>

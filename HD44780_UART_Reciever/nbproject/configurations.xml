@@ -3,6 +3,7 @@
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
       <df name="Inc">
+        <in>HD44780.h</in>
         <in>main.h</in>
       </df>
       <df name="Lib">
@@ -69,6 +70,7 @@
         </df>
       </df>
       <df name="Src">
+        <in>HD44780.c</in>
         <in>main.c</in>
         <in>stm32f0xx_it.c</in>
         <in>system_stm32f0xx.c</in>
@@ -116,6 +118,8 @@
           </cTool>
         </makeTool>
       </makefileType>
+      <item path="Inc/HD44780.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Inc/main.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/CMSIS/Device/ST/STM32F0xx/Source/Templates/system_stm32f0xx.c"
@@ -322,6 +326,8 @@
             ex="false"
             tool="0"
             flavor2="2">
+      </item>
+      <item path="Src/HD44780.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="Src/main.c" ex="false" tool="0" flavor2="2">
       </item>
