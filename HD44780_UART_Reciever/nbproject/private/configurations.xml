@@ -216,8 +216,6 @@
         <in>system_stm32f0xx.c</in>
       </df>
     </df>
-    <df root="Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Src" name="1">
-    </df>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
