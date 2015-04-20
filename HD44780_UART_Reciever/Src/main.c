@@ -13,6 +13,7 @@ const uint8_t PosX_MAX = MsgX-1;
 const uint8_t PosY_MAX = MsgY-1;
 uint8_t PosX = 0;
 uint8_t PosY = 0;
+
 void SystemClock_Config(void);
 void PrintScreen(uint8_t PosY, uint8_t PosX);
 
@@ -21,8 +22,10 @@ int main(void)
     //Init System
     HAL_Init();
     SystemClock_Config();
+
     //Allow Systick Interrupt for Time Measurement to interrupt other interrupts
     HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+
     //Fill Array with spaces
     for (PosY = 0; PosY <= PosY_MAX; PosY++) {
         for (PosX = 0; PosX <= PosX_MAX; PosX++) {
@@ -31,7 +34,8 @@ int main(void)
     }
     PosY = 0;
     PosX = 0;
-    //Init Display (Does clock enabeling and IO Handeling for me)
+
+    //Init Display (Does clock enabling and IO handling for me)
     HD44780_HandleStruct.D4.Port = GPIOA;
     HD44780_HandleStruct.D4.Pin = GPIO_PIN_5;
     HD44780_HandleStruct.D5.Port = GPIOA;
@@ -46,7 +50,8 @@ int main(void)
     HD44780_HandleStruct.E.Pin = GPIO_PIN_10;
     HD44780_HandleStruct.Lines = 2;
     HD44780_Init(&HD44780_HandleStruct);
-    //Enable CLock
+
+    //Enable Clocks
     __GPIOA_CLK_ENABLE();
     __USART1_CLK_ENABLE();
     //Activate PA3 as RX pin
@@ -66,6 +71,7 @@ int main(void)
     UartHandle.Init.Mode = UART_MODE_RX;
     UartHandle.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
     HAL_UART_Init(&UartHandle);
+    
     //Splash screen, gets disabled once first character arrives
     HD44780_Setcursor(&HD44780_HandleStruct,0,0);
     HD44780_Puts(&HD44780_HandleStruct, "UART Terminal");
@@ -122,7 +128,7 @@ int main(void)
         }
         //Output screen
         PrintScreen(0, 0);
-        //Put coursor at right position
+        //Put cursor at right position
         HD44780_Setcursor(&HD44780_HandleStruct, PosX, PosY);
         //At the end so splashscreen would work
         HAL_UART_Receive(&UartHandle, (uint8_t *) & Msg[PosY][PosX], 1, 0xFFFFFFFF);
@@ -140,7 +146,7 @@ void PrintScreen(uint8_t Y, uint8_t X)
         HD44780_Putc(&HD44780_HandleStruct, Msg[Y][X + i]);
     }
     HD44780_Setcursor(&HD44780_HandleStruct, 0, 1);
-    //So Circular Buferr works
+    //So Circular buffer works
     if (Y >= PosY_MAX) {
         Y_2nd = 0;
     } else {

@@ -12,6 +12,8 @@
         <group>
             <file>file:/home/david/Documents/Projects/MCU/stm32f030f4-Projects/HD44780_UART_Reciever/Src/main.c</file>
             <file>file:/home/david/Documents/Projects/MCU/stm32f030f4-Projects/HD44780_UART_Reciever/Src/HD44780.c</file>
+            <file>file:/home/david/Documents/Projects/MCU/stm32f030f4-Projects/HD44780_UART_Reciever/Src/Makefile</file>
+            <file>file:/home/david/Documents/Projects/MCU/stm32f030f4-Projects/HD44780_UART_Reciever/Inc/HD44780.h</file>
         </group>
     </open-files>
 </project-private>
