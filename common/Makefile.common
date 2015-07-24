@@ -1,0 +1,106 @@
+#Library
+STM32CUBE = $(COMMON)Lib/STM32Cube_FW_F0_V1.2.0/
+CMSIS = $(STM32CUBE)Drivers/CMSIS/
+HAL_SRC = $(STM32CUBE)Drivers/STM32F0xx_HAL_Driver/Src/
+INCLUDE += -I$(CMSIS)Device/ST/STM32F0xx/Include -I$(CMSIS)Include -I$(STM32CUBE)Drivers/STM32F0xx_HAL_Driver/Inc
+##Standard
+SRCS += $(HAL_SRC)stm32f0xx_hal.c $(HAL_SRC)stm32f0xx_hal_cortex.c
+##ADC
+SRCS += $(HAL_SRC)stm32f0xx_hal_adc.c $(HAL_SRC)stm32f0xx_hal_adc_ex.c
+##CEC
+SRCS += $(HAL_SRC)stm32f0xx_hal_cec.c
+##COMP
+SRCS += $(HAL_SRC)stm32f0xx_hal_comp.c
+##CRC
+SRCS += $(HAL_SRC)stm32f0xx_hal_crc.c $(HAL_SRC)stm32f0xx_hal_crc_ex.c
+##DAC
+SRCS += $(HAL_SRC)stm32f0xx_hal_dac.c $(HAL_SRC)stm32f0xx_hal_dac_ex.c
+##DMA
+SRCS += $(HAL_SRC)stm32f0xx_hal_dma.c
+##FLASH
+SRCS += $(HAL_SRC)stm32f0xx_hal_flash.c $(HAL_SRC)stm32f0xx_hal_flash_ex.c
+##GPIO
+SRCS += $(HAL_SRC)stm32f0xx_hal_gpio.c
+##I2C
+SRCS += $(HAL_SRC)stm32f0xx_hal_i2c.c $(HAL_SRC)stm32f0xx_hal_i2c_ex.c
+##I2S
+SRCS += $(HAL_SRC)stm32f0xx_hal_i2s.c
+##IRDA
+SRCS += $(HAL_SRC)stm32f0xx_hal_irda.c
+##IWDG
+SRCS += $(HAL_SRC)stm32f0xx_hal_iwdg.c
+##PCD
+SRCS += $(HAL_SRC)stm32f0xx_hal_pcd.c $(HAL_SRC)stm32f0xx_hal_pcd_ex.c
+##PWR
+SRCS += $(HAL_SRC)stm32f0xx_hal_pwr.c $(HAL_SRC)stm32f0xx_hal_pwr_ex.c
+##RCC
+SRCS += $(HAL_SRC)stm32f0xx_hal_rcc.c $(HAL_SRC)stm32f0xx_hal_rcc_ex.c
+##RTC
+SRCS += $(HAL_SRC)stm32f0xx_hal_rtc.c $(HAL_SRC)stm32f0xx_hal_rtc_ex.c
+##SMARTCARD
+SRCS += $(HAL_SRC)stm32f0xx_hal_smartcard.c $(HAL_SRC)stm32f0xx_hal_smartcard_ex.c
+##SMBUS
+SRCS += $(HAL_SRC)stm32f0xx_hal_smbus.c
+##SPI
+SRCS += $(HAL_SRC)stm32f0xx_hal_spi.c
+##TIM
+SRCS += $(HAL_SRC)stm32f0xx_hal_tim.c $(HAL_SRC)stm32f0xx_hal_tim_ex.c
+##TSC
+SRCS += $(HAL_SRC)stm32f0xx_hal_tsc.c
+##UART
+SRCS += $(HAL_SRC)stm32f0xx_hal_uart.c $(HAL_SRC)stm32f0xx_hal_uart_ex.c
+##USART
+SRCS += $(HAL_SRC)stm32f0xx_hal_usart.c
+##WWDG
+SRCS += $(HAL_SRC)stm32f0xx_hal_wwdg.c
+
+#Just Stuff
+OBJS = $(SRCS:%.c=%.o) $(STARTUP:%.s=%.o)
+
+#Executables
+PREFIX = arm-none-eabi
+CC = $(PREFIX)-gcc
+OPENOCD = openocd
+RM = rm -f
+
+#Compiler Flags
+CFLAGS = -mcpu=cortex-m0 -march=armv6-m -mthumb -mfloat-abi=soft --specs=nosys.specs 
+CFLAGS += -fno-strict-aliasing -fdata-sections -ffunction-sections -mlong-calls
+CFLAGS += -Wall -g -Os
+CFLAGS += $(DEFINES)
+
+#Linker Flags (are given gcc)
+LDFLAGS = -specs=nano.specs -Wl,--gc-sections
+LDFLAGS += -Wl,-script="$(LINKER_FILE)" -Wl,-Map=$(PROJ_NAME).map
+
+#Rules
+.PHONY:clean
+.SECONDARY:
+
+
+%.o: %.c
+	$(CC) $(CFLAGS) -o $@  -c $< $(INCLUDE)
+
+%.o: %.s
+	$(CC) $(CFLAGS) -o $@  -c $< $(INCLUDE)
+
+all: $(PROJ_NAME).elf clang-complete
+
+%.elf: $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS) $(LDFLAGS)
+
+flash: all
+	openocd -f ./openocd.cfg \
+	-c "init" \
+	-c "reset init" \
+	-c "halt" \
+	-c "flash write_image erase $(PROJ_NAME).elf" \
+	-c "verify_image $(PROJ_NAME).elf" \
+	-c "reset run" -c shutdown
+
+clang-complete:
+	echo $(INCLUDE)>.clang_complete
+
+clean:
+	$(RM) $(OBJS) $(PROJ_NAME).elf $(PROJ_NAME).map .clang_complete
+
