@@ -1,0 +1,1 @@
+-I./Inc -I../common/Lib/STM32Cube_FW_F0_V1.2.0/Drivers/CMSIS/Device/ST/STM32F0xx/Include -I../common/Lib/STM32Cube_FW_F0_V1.2.0/Drivers/CMSIS/Include -I../common/Lib/STM32Cube_FW_F0_V1.2.0/Drivers/STM32F0xx_HAL_Driver/Inc
